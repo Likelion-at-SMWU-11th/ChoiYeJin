@@ -1,7 +1,14 @@
 from django.shortcuts import render
 from django.http import HttpResponse, JsonResponse
 
+from django.views.generic import ListView
+from .models import Post
+
 # Create your views here.
+class class_view(ListView):
+    model = Post
+    template_name = 'cbv_view.html'
+
 def url_view(request):
     data = {'code': '001', 'msg': 'OK'}
     return HttpResponse('<h1>url_views</h1>')
