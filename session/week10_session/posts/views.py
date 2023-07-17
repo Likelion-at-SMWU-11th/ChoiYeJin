@@ -6,10 +6,19 @@ from django.contrib.auth.decorators import login_required
 from .models import Post
 
 def index(request):
-    return render(request, 'index.html')
+    post_list = Post.objects.all().order_by('-created_at') # Post 모델에 있는 객체 전부 불러오기
+    context = {
+        'post_list': post_list,
+    }
+    return render(request, 'index.html', context)
 
 def post_list_view(request):
-    return render(request, 'posts/post_list.html')
+    # post_list = Post.objects.all() # Post 모델에 있는 객체 전부 불러오기
+    post_list = Post.objects.filter(writer=request.user) # Post.writer가 현재 로그인 사용자인 데이터 조회
+    context = { # Post 객체를 리스트 형태로 담기
+        'post_list': post_list,
+    }
+    return render(request, 'posts/post_list.html', context)
 
 def post_detail_view(request, id):
     return render(request, 'posts/post_detail.html')
