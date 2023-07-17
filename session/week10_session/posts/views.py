@@ -21,7 +21,15 @@ def post_list_view(request):
     return render(request, 'posts/post_list.html', context)
 
 def post_detail_view(request, id):
-    return render(request, 'posts/post_detail.html')
+    try:
+        post = Post.objects.get(id=id)
+    except Post.DoesNotExist: # 존재하지 않는 게시글을 조회할 경우
+        return redirect('index') # index.html로 리다이렉트
+    post = Post.objects.get(id=id)
+    context = {
+        'post': post,
+    }
+    return render(request, 'posts/post_detail.html', context)
 
 @login_required
 def post_create_view(request):
